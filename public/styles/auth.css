@@ -1,0 +1,15 @@
+h1 {
+  text-align: center;
+  color: var(--color-gray-300);
+}
+
+
+
+form a {
+  color: var(--color-primary-200);
+}
+
+form a:hover,
+form a:active {
+  color: var(--color-primary-400);
+}

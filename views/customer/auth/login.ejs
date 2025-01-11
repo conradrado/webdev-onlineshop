@@ -1,0 +1,36 @@
+
+<%- include('../../shared/includes/head', {pageTitle: 'login'})//이거 하드코드} %>
+    <link rel="stylesheet" href="/styles/forms.css">
+    <link rel="stylesheet" href="/styles/auth.css">
+</head>
+
+<body>
+    <%- include('../../shared/includes/header') %>
+    
+    <main>
+        <% if (inputData.errorMessage) { %>
+            <section class="alert">
+                <h2>Invalid Authentication</h2>
+                <p><%=inputData.errorMessage%></p>
+            </section>
+        <% } %>
+        <form action='/login' method="POST">
+            <input name='_csrf' type="text" value="<%= locals.csrfToken %>" hidden>
+            <h1>Log in</h1>
+            <div>
+                <label for="email">Email</label>
+                <input name='email' type="email" id="email" value = "<%=inputData.email%>"required>
+            </div>
+
+            <div>
+                <label for="password">Password</label>
+                <input name='password' type="password" id="password" value="<%=inputData.password%>" required>
+            </div>
+        
+            <button class='btn'>Log in!</button>
+            <p id="switch-login"><a href="/signup">Sign up</a></p>
+        </form>
+
+    </main>
+
+<%- include('../../shared/includes/footer') %>
