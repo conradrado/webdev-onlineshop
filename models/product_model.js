@@ -3,7 +3,7 @@ const db = require("../data/database");
 
 // 상품 클래스
 class Product {
-  // 생성자 
+  // 생성자
   constructor(productData) {
     this.title = productData.title;
     this.summary = productData.summary;
@@ -11,7 +11,8 @@ class Product {
     this.description = productData.description;
     this.image = productData.image;
     this.updateImageData(); // image값을 받아서, imagePath와 imageUrl을 설정.
-    if (productData._id) { // 요청에 _id값이 있다면, 즉. 이미 DB에 존재한다면.
+    if (productData._id) {
+      // 요청에 _id값이 있다면, 즉. 이미 DB에 존재한다면.
       this.id = productData._id.toString();
     } else {
       this.id = null;
@@ -27,18 +28,20 @@ class Product {
 
   static async findById(productId) {
     let prodId;
-    try{
+    try {
       prodId = mongodb.ObjectId.createFromHexString(productId);
-    }
-    catch (error){
+    } catch (error) {
       error.code = 404;
       throw error;
     }
 
-    const product = await db.getDb().collection('products').findOne({_id: prodId});
-    
-    if(!product){
-      const error = new Error('This product is not in our database!');
+    const product = await db
+      .getDb()
+      .collection("products")
+      .findOne({ _id: prodId });
+
+    if (!product) {
+      const error = new Error("This product is not in our database!");
       throw error;
     }
 
@@ -61,24 +64,35 @@ class Product {
 
     // this.id가 존재 = 이미 DB에 존재.
     if (this.id) {
-     
       const prodId = new mongodb.ObjectId(this.id);
 
-      if (!this.image){ // req로 들어오는 image가 존재하지 않음. 즉 이미지를 덮어쓰지 않음.
+      if (!this.image) {
+        // req로 들어오는 image가 존재하지 않음. 즉 이미지를 덮어쓰지 않음.
         delete productData.image; // image 키 쌍 자체를 delete하여 덮어쓰기를 미연에 방지
       }
 
-      await db.getDb().collection('products').updateOne({_id: prodId}, {$set : productData});
-    }
-    else{
-      await db.getDb().collection('products').insertOne(productData);
+      await db
+        .getDb()
+        .collection("products")
+        .updateOne({ _id: prodId }, { $set: productData });
+    } else {
+      await db.getDb().collection("products").insertOne(productData);
     }
   }
-
 
   async replaceImage(newImage) {
     this.image = newImage;
     this.updateImageData();
+  }
+
+  async remove() {
+    const prodId = mongodb.ObjectId.createFromHexString(this.id);
+
+    try {
+      await db.getDb().collection("products").deleteOne({ _id: prodId });
+    } catch (error) {
+      throw error;
+    }
   }
 }
 

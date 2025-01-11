@@ -14,5 +14,6 @@ router.get('/products/:id', adminController.getOneProduct);
 
 router.post('/products/:id', fileUploadMiddleware, adminController.postProduct);
 
+router.delete('/products/:id', adminController.deleteProduct);
 
 module.exports = router;

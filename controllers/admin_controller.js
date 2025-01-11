@@ -32,7 +32,6 @@ async function createNewProduct(req, res, next){
 
 // 이미 생성되어 DB에 존재하는 상품을 조회할 때 사용하는 컨트롤러 메소드.
 async function getOneProduct(req, res, next){
-    console.log(`getProduct id : ${req.params.id}`);
     try{
         const product = await Product.findById(req.params.id); // 요청의 ID를 통해 DB에 존재하는 해당 상품에 접근.
         res.render('admin/products/update-product', {product: product}); 
@@ -65,10 +64,25 @@ async function postProduct(req, res, next){
     res.redirect('/admin/products');
 }
 
+async function deleteProduct(req, res, next){
+    try{
+        const product = await Product.findById(req.params.id);
+        await product.remove();
+    }
+    catch (error){
+        next(error);
+        return;
+    }
+
+    //res.redirect('/admin/products'); <-- 기본적으로 프론트엔드에서는 리다이렉션을 지원하지 않음. 그 대신 res.json객체를 반환
+    res.json();
+}
+
 module.exports = {
     getProducts: getProducts,
     getNewProduct:getNewProduct,
     createNewProduct, createNewProduct,
     getOneProduct: getOneProduct,
     postProduct: postProduct,
+    deleteProduct: deleteProduct
 }
