@@ -8,7 +8,7 @@ class Product {
     this.title = productData.title;
     this.summary = productData.summary;
     this.price = +productData.price; // 앞에 +를 붙임으로써 숫자 전환.
-    this.description = productData.description;
+    this.description = productData.description.trim();
     this.image = productData.image;
     this.updateImageData(); // image값을 받아서, imagePath와 imageUrl을 설정.
     if (productData._id) {
