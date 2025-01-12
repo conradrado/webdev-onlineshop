@@ -1,6 +1,6 @@
 <%- include('../../shared/includes/head', {pageTitle: 'All Products'})//이거 하드코드} %>
-    <link rel="stylesheet" href="/styles/forms.css">
-    <link rel="stylesheet" href="/styles/auth.css">
+<link rel="stylesheet" href="/styles/products.css">
+<script src="/scripts/product-management.js" defer></script>
 </head>
 
 <body>
@@ -9,6 +9,13 @@
     <main>
         <h1>All products</h1>
         <p>A list of products...</p>
+        <ul id="products-grid">
+            <% for (const product of products){ %>
+                <li>
+                    <%- include('../../shared/includes/product-item', {product: product}) %>
+                </li>
+            <% } %>
+        </ul>
 
     </main>
 

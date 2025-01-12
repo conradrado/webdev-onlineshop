@@ -4,6 +4,7 @@ const csrf = require('csurf'); // csrf 토큰 모듈
 const addCsrfTokenMiddleware = require('./middleware/csrf-token'); // csrf 토큰 모듈을 이용한 사용자 지정 미들웨어
 const errorHandler = require('./middleware/error-handler'); // 에러 핸들링을 위한 사용자 지정 미들웨어어
 const checkAuthStatus = require('./middleware/authenticate'); // 인증 관련 미들웨어
+const protectRoutes = require('./middleware/protect_routes');
 
 const expressSession = require('express-session'); // 세션 사용을 위한 모듈
 const app = express(); // 익스프레스 선언
@@ -30,9 +31,11 @@ app.use(csrf()); // 세션 미들웨어 다음으로 csrf 토큰 미들웨어 �
 app.use(addCsrfTokenMiddleware); // 요건 그냥 템플릿에서 csrf토큰을 좀 더 쉽게 접근하기 위해 사용하는 사용자 지정 미들웨어어
 app.use(checkAuthStatus);
 
+app.use(baseRoute);
 app.use(authRoute); // 권한 라우팅 모듈을 미들웨어로 사용
 app.use(productRoute);
-app.use(baseRoute);
+
+app.use(protectRoutes);
 app.use('/admin', adminRoute);
 
 

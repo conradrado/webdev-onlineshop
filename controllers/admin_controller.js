@@ -1,4 +1,6 @@
 const Product = require('../models/product_model');
+const validUtil = require("../util/valid_util");
+const errorFlash = require('../util/errorflash_util');
 
 // DB에 저장된 모든 상품들을 fetch 하는 컨트롤러 메소드
 async function getProducts(req, res){
