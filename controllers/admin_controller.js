@@ -1,6 +1,5 @@
 const Product = require('../models/product_model');
-const validUtil = require("../util/valid_util");
-const errorFlash = require('../util/errorflash_util');
+const Order = require('../models/order_model');
 
 // DB에 저장된 모든 상품들을 fetch 하는 컨트롤러 메소드
 async function getProducts(req, res){
@@ -80,11 +79,40 @@ async function deleteProduct(req, res, next){
     res.json();
 }
 
+async function getOrders(req, res, next){
+    try{
+        const orders = await Order.findAll();
+        res.render('admin/orders/admin-orders', {orders : orders});
+    }
+    catch(error){
+        next(error);
+        return;
+    }
+}
+
+async function updateOrder(req, res, next){
+    try{
+        const order = await Order.findById(req.params.id);
+        order.status = req.body.status;
+        await order.saveOrder();
+        res.json({
+          updatedStatus : req.body.status
+        });
+    }
+    catch(error){
+        next(error);
+    }
+  
+  }
+
+
 module.exports = {
     getProducts: getProducts,
     getNewProduct:getNewProduct,
     createNewProduct, createNewProduct,
     getOneProduct: getOneProduct,
     postProduct: postProduct,
-    deleteProduct: deleteProduct
+    deleteProduct: deleteProduct,
+    getOrders: getOrders,
+    updateOrder : updateOrder
 }

@@ -33,4 +33,5 @@ let response
   badge.textContent = newTotalQuantity;
 }
 
+
 addBtn.addEventListener("click", addToCart);

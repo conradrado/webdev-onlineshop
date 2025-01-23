@@ -16,7 +16,8 @@ const authRoute = require('./routes/auth.routes'); // 권한 라우팅 모듈
 const productRoute = require('./routes/products_routes');
 const cartRoutes = require('./routes/cart_routes');
 const baseRoute = require('./routes/base_routes');
-const adminRoute = require('./routes/admin_routes')
+const adminRoute = require('./routes/admin_routes');
+const orderRoute = require('./routes/order_routes');
 
 app.set('view engine', 'ejs'); // 템플릿(뷰) 렌더링시 ejs를 사용하도록 설정
 app.set('views', path.join(__dirname, 'views')); // 템플릿(뷰)의 경로를 설정. __dirname = 프로젝트 폴더
@@ -43,6 +44,7 @@ app.use(productRoute);
 app.use('/cart', cartRoutes);
 
 app.use(protectRoutes);
+app.use('/orders', orderRoute);
 app.use('/admin', adminRoute);
 
 

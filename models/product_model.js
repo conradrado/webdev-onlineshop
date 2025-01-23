@@ -94,6 +94,20 @@ class Product {
       throw error;
     }
   }
+
+  // productIds 배열 안에 있는 id와 같은 상품들을 인스턴스화 하여 배열 형식으로 리턴한다.
+  async findMultiple(productIds){
+    const ids = productIds.map(function(id){
+      return mongodb.ObjectId.createFromHexString(id);
+    })
+
+    const products = await db.getDb().collection('product').find({$in : { _id : ids}}).toArray();
+
+    return products.map(function(product){
+      return new Product(product);
+    })
+
+  }
 }
 
 module.exports = Product;

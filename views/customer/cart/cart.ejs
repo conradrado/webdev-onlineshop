@@ -1,5 +1,6 @@
 <%- include('../../shared/includes/head', {pageTitle: 'Cart'})//이거 하드코드} %>
 <link rel="stylesheet" href="/styles/cart.css">
+<script src="/scripts/cart-item-management.js" defer></script>
 
 </head>
 
@@ -17,9 +18,18 @@
             <% } %>
         </ul>
         <div id="cart-total">
-            <p>Price : <%= locals.cart.totalPrice.toFixed(2) %></p>
+            <p>Price : $ <span id="cartTotal"><%= locals.cart.totalPrice.toFixed(2) %></span> </p>
             
-            <button class="btn">Buy</button>
+            <% if (locals.isAuth && locals.cart.totalQuantity > 0) { %>
+                <form action="/orders" method="POST">
+                    <input type="hidden" name="_csrf" value="<%= locals.csrfToken %>" >
+                    <button class="btn">Buy</button>
+                </form>
+            <% } else { %>
+            <form action="/login" method="GET">
+                <button id="login" class="btn">Login before you buy!</button>
+            </form>
+            <% } %>
         </div>
 
     </main>

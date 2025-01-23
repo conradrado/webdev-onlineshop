@@ -1,5 +1,6 @@
 const db = require("../data/database");
 const bcrypt = require("bcryptjs");
+const mongodb = require("mongodb");
 
 class User {
   constructor(email, password, name, address) {
@@ -25,6 +26,18 @@ class User {
       .getDb()
       .collection("users")
       .findOne({ email: this.email });
+    return result;
+  }
+
+  static async getUserWithUid(uid) {
+
+    const result = await db
+      .getDb()
+      .collection("users")
+      .findOne(
+        {_id: mongodb.ObjectId.createFromHexString(uid) },{projection: {password : 0}}
+       // 두번째 매개변수에서는 가져오려 하는 필드를 제한할 수 있다 (-1 => exclude)
+      );
     return result;
   }
 
